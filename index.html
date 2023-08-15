@@ -18,7 +18,7 @@
     <input type="file" name="image" accept="image/*" multiple>
     <select name="format">
       <option value="avif">AVIF</option>
-      <option value="bmp">BMP</option>
+      <option value="avif">BMP</option>
       <option value="gif">GIF</option>
       <option value="heic">HEIC</option>
       <option value="heif">HEIF</option>
@@ -74,7 +74,7 @@
 
         const formData = new FormData(form);
 
-        console.log(formData);
+        // console.log(formData);
 
         try {
           const response = await fetch('http://localhost:3000/convert', {
@@ -87,6 +87,8 @@
 
           if (response.ok) {
             const conversionResults = await response.json();
+
+            console.log(conversionResults);
 
             conversionResults.convert.forEach(result => {
               const row = document.createElement('tr');
