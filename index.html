@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Image Converter</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+  <style>
+    #loader {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+<div class="row">
+    <div class="col-md-12 my-5">
+  <h1>Image Converter</h1>
+  <form id="convert-form" enctype="multipart/form-data">
+    <input type="file" name="image" accept="image/*" multiple>
+    <select name="format">
+      <option value="avif">AVIF</option>
+      <option value="bmp">BMP</option>
+      <option value="gif">GIF</option>
+      <option value="heic">HEIC</option>
+      <option value="heif">HEIF</option>
+      <option value="jpeg">JPEG</option>
+      <option value="jpg">JPG</option>
+      <option value="png">PNG</option>
+      <option value="tif">TIF</option>
+      <option value="tiff">TIFF</option>
+      <option value="webp">WebP</option>
+      <option value="svg">SVG</option>
+    </select>
+    
+    <button type="submit" class="btn btn-primary">Convert</button>
+  </form>
+</div>
+
+<div class="col-md-12">
+  <div id="loader">Loading...</div>
+  <div id="result">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>Original Size</th>
+          <th>New Size</th>
+          <th>Conversion Time</th>
+          <th>Download Link</th>
+        </tr>
+      </thead>
+      <tbody id="result-table-body">
+        <!-- Conversion results will be added here -->
+      </tbody>
+    </table>
+  </div>
+  </div>
+
+  </div> <!-- Placeholder for the converted image and info -->
+</div>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js" integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous"></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('convert-form');
+      const resultTableBody = document.getElementById('result-table-body');
+      const loader = document.getElementById('loader');
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        resultTableBody.innerHTML = ''; // Clear previous content
+        loader.style.display = 'block';
+
+        const formData = new FormData(form);
+
+        console.log(formData);
+
+        try {
+          const response = await fetch('http://localhost:3000/convert', {
+            method: 'POST',
+            body: formData,
+            headers: {
+              'auth-key': '123' // Replace with your actual auth key
+            }
+          });
+
+          if (response.ok) {
+            const conversionResults = await response.json();
+
+            conversionResults.convert.forEach(result => {
+              const row = document.createElement('tr');
+              row.innerHTML = `
+              <td><img src="${result.downloadLink}" style="max-width: 100px;max-height: 100px;"/></td>
+                <td>${result.originalSize}</td>
+                <td>${result.newImageSize}</td>
+                <td>${result.conversionTime} ms</td>
+                <td><a href="${result.downloadLink}" download class="btn btn-success">Download</a></td>
+              `;
+
+              resultTableBody.appendChild(row);
+            });
+          } else {
+            resultTableBody.innerHTML = '<tr><td colspan="4">Error during conversion</td></tr>';
+          }
+        } catch (error) {
+          console.error(error);
+          resultTableBody.innerHTML = '<tr><td colspan="4">An error occurred</td></tr>';
+        } finally {
+          loader.style.display = 'none';
+        }
+      });
+    });
+  </script>
+</body>
+</html>
