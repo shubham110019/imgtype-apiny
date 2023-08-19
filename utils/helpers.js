@@ -14,7 +14,7 @@ function formatBytes(bytes, decimals = 2) {
   function checkAuthKey(req, res, next) {
     const authKey = req.headers['auth-key'];
   
-    if (authKey !== 'RRbKJEwKnso6ltfXuQOzUk9SiEgK6dLKnT7IvGKl') { 
+    if (authKey !== 'RRbKJEwKnso6ltfXuQOzUk9SiEgK6dLKnT7IvGK') { 
       return res.status(401).json({ error: 'Unauthorized' });
     }
   
