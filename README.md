@@ -1,6 +1,6 @@
 # imgtype-apiny
 
-api for image convter 
+# Image Convter 
 ```
 https://imgtypeapiny.onrender.com/convert
 ```
@@ -11,14 +11,14 @@ AVIF, GIF, HEIC, HEIF, JPEG, JPG, PNG, TIF, TIFF, WebP
 ------------------------------------------------------------------------------------------
 
 
-# api for image compress 
+# Image Compress 
 ```
 https://imgtypeapiny.onrender.com/compress
 ```
 
 ------------------------------------------------------------------------------------------
 
-# api key
+# Key
 ```
 RRbKJEwKnso6ltfXuQOzUk9SiEgK6dLKnT7IvGK
 ```
