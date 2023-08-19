@@ -47,7 +47,7 @@
       e.preventDefault();
 
       const formData = new FormData(form);
-      const response = await fetch('https://imgtype-api.onrender.com/compress', {
+      const response = await fetch('http://localhost:3000/compress', {
         method: 'POST',
         headers: {
           'Auth-Key': '123' // Replace with your actual auth key
@@ -63,14 +63,7 @@
       if (response.ok) {
         // resultDiv.innerHTML = '';
         data.compress.forEach(result => {
-          // const img = document.createElement('img');
-          // img.src = result.downloadLink;
-          // img.alt = 'Compressed Image';
-          // img.style.maxWidth = '300px';
-          // resultDiv.appendChild(img);
-
-          // console.log(result);
-
+ 
           const row = document.createElement('tr');
               row.innerHTML = `
               <td><img src="${result.downloadLink}" style="max-width: 100px;max-height: 100px;"/></td>
@@ -81,9 +74,6 @@
               `;
 
               resultTableBody.appendChild(row);
-
-
-
         });
       } else {
         resultDiv.innerHTML = `<p>Error: ${data.error}</p>`;
