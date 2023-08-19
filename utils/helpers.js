@@ -12,9 +12,9 @@ function formatBytes(bytes, decimals = 2) {
   }
   
   function checkAuthKey(req, res, next) {
-    const authKey = req.headers['auth-key']; // Change 'auth-key' to the actual header name
+    const authKey = req.headers['auth-key'];
   
-    if (authKey !== '123') { // Replace 'your-secret-auth-key' with your actual auth key
+    if (authKey !== 'RRbKJEwKnso6ltfXuQOzUk9SiEgK6dLKnT7IvGKl') { 
       return res.status(401).json({ error: 'Unauthorized' });
     }
   

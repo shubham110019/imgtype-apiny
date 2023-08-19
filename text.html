@@ -1,0 +1,88 @@
+
+<script>
+  function selectFile() {
+    document.getElementById("input-files").click();
+  }
+
+  var input = document.getElementById("input-files");
+  input.addEventListener("change", function () {
+    document.getElementById("submit").click();
+  });
+
+  const form = document.getElementById('convert-form');
+  const resultTableBody = document.getElementById('result-table-body');
+      const loader = document.getElementById('loader');
+      const errorAlert = document.getElementById('error-alert');
+
+
+  form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        resultTableBody.innerHTML = ''; // Clear previous content
+        loader.style.display = 'block';
+
+        const formData = new FormData(form);
+
+        // console.log(formData);
+
+        try {
+          const response = await fetch('https://imgtypeapiny.onrender.com/convert', {
+            method: 'POST',
+            body: formData,
+            headers: {
+              'auth-key': '123' // Replace with your actual auth key
+            }
+          });
+
+          if (response.ok) {
+            const conversionResults = await response.json();
+
+            console.log(conversionResults);
+
+            conversionResults.convert.forEach(result => {
+              const row = document.createElement('tr');
+              row.innerHTML = `
+              <td><img src="${result.downloadLink}" style="max-width: 100px;max-height: 100px;"/></td>
+                <td>${result.originalSize}</td>
+                <td>${result.newImageSize}</td>
+                <td>${result.conversionTime} ms</td>
+                <td><a href="${result.downloadLink}" download class="btn btn-success">Download</a></td>
+              `;
+
+              resultTableBody.appendChild(row);
+            });
+
+
+            conversionResults.errors.forEach(err => {
+              const errorMessage = document.createElement('div');
+              errorMessage.className = 'alert alert-danger';
+              errorMessage.textContent = err.error;
+              errorAlert.appendChild(errorMessage);
+            });
+
+
+          } else {
+
+              console.log('api not working');
+           
+
+          }
+        } catch (error) {
+          console.error(error);
+        } finally {
+          loader.style.display = 'none';
+        }
+      });
+
+
+
+  var reloadButton = document.getElementById("reload-button");
+
+  // Add a click event listener to the button
+  reloadButton.addEventListener("click", function () {
+    // Reload the page
+    location.reload();
+  });
+
+
+</script>
